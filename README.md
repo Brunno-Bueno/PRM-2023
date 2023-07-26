@@ -1,1 +1,1 @@
-# Workspace da Disciplina de Programaçãoo
+# Workstation da Disciplina de Programação
