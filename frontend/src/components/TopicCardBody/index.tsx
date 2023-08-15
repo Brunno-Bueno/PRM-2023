@@ -1,4 +1,4 @@
-import { Avatar, Typography } from "@mui/material";
+import {Typography } from "@mui/material";
 function TopicCardBody(){
     return (
         <div id="topic-card-body" style={{marginLeft: '3rem'}}>

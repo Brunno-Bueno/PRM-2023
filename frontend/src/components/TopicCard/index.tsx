@@ -1,4 +1,4 @@
-import { Avatar, Typography } from "@mui/material";
+
 import TopicCardHeader from "../TopicCardHeader";
 import TopicCardBody from "../TopicCardBody";
 import TopicCardActions from "../TopicCardActions";
