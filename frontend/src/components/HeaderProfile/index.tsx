@@ -5,7 +5,7 @@ import { IntlProvider, FormattedDate } from 'react-intl';
 
 //Import de Imagens
 import banner from '../../assets/img/profile_banner.png';
-import avatar from '../../assets/img/profile_avatar.jpg';
+import avatar from '../../assets/img/jair-bolsonaro.png';
 
 //Import do Estilo
 import './style.css'
