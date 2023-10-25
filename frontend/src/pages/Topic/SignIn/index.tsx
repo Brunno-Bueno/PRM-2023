@@ -1,70 +1,113 @@
-import { Box, Button, Card, CardContent, CircularProgress, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Card, CardContent, Snackbar, TextField, Typography } from "@mui/material";
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ICredential } from "../../../@types";
 import { LoadingButton } from "@mui/lab";
+import { ICredential } from "../../../@types";
+import { useAuth } from "../../../hook/useAuth";
 
-function SignInPage(){
+
+function SignInPage() {
+
     const navigate = useNavigate();
-    const [credential, setCredential]= useState<ICredential>({username:'', password:''});
-    const [loading, setLoading] = useState(false);
-    function handleSignIn(event: FormEvent){
-        event.preventDefault();
-        setLoading(true);
-        
-        try {
+    const {login} = useAuth();
+    const [credential, setCredential] = useState<ICredential>(
+        {
+            username: '',
+            password: ''
+        }
+    );
 
-        } catch (e){
+    //State - Loading
+    const [loading, setLoading] = useState(false)
+
+    //State - Error Message
+    const [messageError, setMessageError] = useState('');
+
+    async function handleSignIn(event: FormEvent) {
+        event.preventDefault();
+
+        setLoading(true);
+
+        try {
+            await login(credential);
+            navigate('/');
+        } catch (e) {
             const error = e as Error;
             setMessageError(String(error.message));
-        } finally{
+        } finally {
             setLoading(false);
         }
     }
-    
+
     return (
         <Box id="sign-in-page">
-            <form onSubmit={handleSignIn}> 
+            <form onSubmit={handleSignIn}>
                 <Card>
                     <CardContent>
-                    <Typography variant="h5">
+                        <Typography variant="h5">
                             Faça o Login
                         </Typography>
                         <Typography variant="subtitle1">
                             Já tem uma conta TOPIC?
                         </Typography>
-                        <TextField label="Usuario"
+
+                        <TextField label="Usuário"
                             required
                             fullWidth
-                            value={credential.username} 
-                            onChange={event => setCredential({...credential, username: (event.target as HTMLInputElement).value})}/>
+                            value={ credential.username }
+                            onChange={event => setCredential({...credential, username: (event.target as HTMLInputElement).value})} />
 
                         <TextField label="Senha"
                             required
                             fullWidth
                             type="password"
-                            value={credential.password}
+                            value={ credential.password }
                             onChange={event => setCredential({...credential, password: (event.target as HTMLInputElement).value})} />
-                        <LoadingButton type="submit" variant="contained" size="large" 
-                        loading={loading}>
-                            Entrar
+
+                        <LoadingButton type="submit"
+                            variant="contained"
+                            size="large"
+                            loading={loading}>
+                            Acessar
                         </LoadingButton>
-                            
+
+                        <Box className="sign-separator">
+                            <Box className="traco"></Box>
+                            <Typography component="h5">OU</Typography>
+                            <Box className="traco"></Box>
+                        </Box> 
+
                         <Typography variant="h5">
-                            Crie uma conta
+                            Crie uma Conta
                         </Typography>
                         <Typography variant="subtitle1">
                             Ainda não tem uma conta TOPIC?
                         </Typography>
-
-                        <Button variant="outlined" size="large" onClick={() => navigate('/signup')}>
-                            Criar conta
+                        <Button 
+                            variant="outlined"
+                            size="large"
+                            onClick={() => navigate('/signup') }>
+                            Criar Conta
                         </Button>
 
                     </CardContent>
                 </Card>
             </form>
+
+            <Snackbar
+                open={Boolean(messageError)}
+                autoHideDuration={6000}
+                anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
+                <Alert severity="error" 
+                variant="filled" 
+                onClose={() => setMessageError('')}>
+                    {messageError}
+                </Alert>
+            </Snackbar>
+            
+
         </Box>
     )
 }
+
 export default SignInPage;
