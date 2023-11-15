@@ -9,7 +9,9 @@ import { useAuth } from "../../../hook/useAuth";
 function SignInPage() {
 
     const navigate = useNavigate();
-    const {login} = useAuth();
+
+    const { login } = useAuth();
+
     const [credential, setCredential] = useState<ICredential>(
         {
             username: '',
@@ -34,16 +36,17 @@ function SignInPage() {
         } catch (e) {
             const error = e as Error;
             setMessageError(String(error.message));
+            console.log('ERROR:', String(error.message))
         } finally {
             setLoading(false);
         }
     }
 
     return (
-        <Box id="sign-in-page">
+        <Box id="sign-in-page" className="sign-page">
             <form onSubmit={handleSignIn}>
                 <Card>
-                    <CardContent>
+                    <CardContent className="sign-content">
                         <Typography variant="h5">
                             Faça o Login
                         </Typography>
@@ -70,12 +73,12 @@ function SignInPage() {
                             loading={loading}>
                             Acessar
                         </LoadingButton>
-
+                            
                         <Box className="sign-separator">
                             <Box className="traco"></Box>
                             <Typography component="h5">OU</Typography>
                             <Box className="traco"></Box>
-                        </Box> 
+                        </Box>
 
                         <Typography variant="h5">
                             Crie uma Conta
@@ -98,14 +101,13 @@ function SignInPage() {
                 open={Boolean(messageError)}
                 autoHideDuration={6000}
                 anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
+
                 <Alert severity="error" 
-                variant="filled" 
-                onClose={() => setMessageError('')}>
+                    variant="filled" 
+                    onClose={() => setMessageError('')}>
                     {messageError}
                 </Alert>
             </Snackbar>
-            
-
         </Box>
     )
 }

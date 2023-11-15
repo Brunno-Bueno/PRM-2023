@@ -32,7 +32,18 @@ import { JwtModule } from '@nestjs/jwt';
     }),
     TypeOrmModule.forFeature([User, Topic])
   ],
-  controllers: [AppController, ProfileController, UserController, TopicController, AuthController],
-  providers: [AppService, UserService, TopicService, AuthService],
+  controllers: [
+    AppController, 
+    ProfileController, 
+    UserController, 
+    TopicController, 
+    AuthController
+  ],
+  providers: [
+    AppService,
+    UserService, 
+    TopicService,
+    AuthService
+  ],
 })
 export class AppModule {}

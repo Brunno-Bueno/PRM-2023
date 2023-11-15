@@ -1,18 +1,24 @@
-import { Controller, Get, Param, HttpException, HttpStatus } from "@nestjs/common";
+import { ClassSerializerInterceptor, Controller, Get, HttpException, HttpStatus, Param, UseInterceptors } from "@nestjs/common";
 import { User } from "src/entities/user.entity";
 import { UserService } from "src/services/user.service";
 
+@UseInterceptors(ClassSerializerInterceptor)
+@Controller('profile')
+export class ProfileController {
 
-@Controller("profile")
+    constructor(
+        private userService: UserService
+    ){}
 
-export class ProfileController{
-    constructor(private userService: UserService){}
     @Get(':username')
-    getProfile(@Param('username') username: string): Promise<User>{
+    getProfile(@Param('username') username: string): Promise<User> {
         const found = this.userService.findByUsername(username);
-        if (!found){
-            throw new HttpException('Usuario nao encontrado', HttpStatus.NOT_FOUND)
+
+        if (!found) {
+            throw new HttpException('Usuário não encontrado', HttpStatus.NOT_FOUND)
         }
+
         return found;
     }
+
 }

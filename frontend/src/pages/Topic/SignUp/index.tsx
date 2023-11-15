@@ -9,7 +9,9 @@ import { useAuth } from "../../../hook/useAuth";
 function SignUpPage() {
 
     const navigate = useNavigate();
-    const {register} = useAuth();
+
+    const { register } = useAuth();
+
     const [userForm, setUserForm] = useState<IUser>(
         {
             fullname: '',
@@ -24,16 +26,17 @@ function SignUpPage() {
 
     //State - Messages
     const [messageError, setMessageError] = useState('');
-    const [messageSucess, setMessageSucess] = useState('');
+    const [messageSuccess, setMessageSuccess] = useState('');
 
     async function handleSignUp(event: FormEvent) {
         event.preventDefault();
 
         setLoading(true);
         setMessageError('');
-        setMessageSucess('');
+        setMessageSuccess('');
 
         try {
+
             await register(userForm);
 
             setUserForm({
@@ -42,7 +45,9 @@ function SignUpPage() {
                 password: '',
                 description: ''
             })
-            setMessageSucess("usuario criado com sucesso")
+
+            setMessageSuccess('Usuário criado com sucesso');
+
         } catch (e) {
             const error = e as Error;
             setMessageError(String(error.message));
@@ -60,15 +65,15 @@ function SignUpPage() {
                             Crie uma Conta
                         </Typography>
                         <Typography variant="subtitle1">
-                            Ainda nao tem uma conta TOPIC
+                            Ainda não tem uma conta TOPIC? 
                         </Typography>
+
                         <TextField label="Nome Completo"
                             required
                             fullWidth
                             value={ userForm.fullname }
                             onChange={event => setUserForm({...userForm, fullname: (event.target as HTMLInputElement).value})} />
 
-                        
                         <TextField label="Usuário"
                             required
                             fullWidth
@@ -88,24 +93,24 @@ function SignUpPage() {
                             loading={loading}>
                             Criar
                         </LoadingButton>
-
+                            
                         <Box className="sign-separator">
                             <Box className="traco"></Box>
                             <Typography component="h5">OU</Typography>
                             <Box className="traco"></Box>
-                        </Box> 
+                        </Box>
 
                         <Typography variant="h5">
                             Faça o Login
                         </Typography>
                         <Typography variant="subtitle1">
-                            Ja tem uma conta TOPIC
+                            Já tem uma conta TOPIC?
                         </Typography>
                         <Button 
                             variant="outlined"
                             size="large"
                             onClick={() => navigate('/signin') }>
-                            Acessar  Conta
+                            Acessar Conta
                         </Button>
 
                     </CardContent>
@@ -116,23 +121,25 @@ function SignUpPage() {
                 open={Boolean(messageError)}
                 autoHideDuration={6000}
                 anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
+
                 <Alert severity="error" 
-                variant="filled" 
-                onClose={() => setMessageError('')}>
+                    variant="filled" 
+                    onClose={() => setMessageError('')}>
                     {messageError}
                 </Alert>
             </Snackbar>
+
             <Snackbar
-                open={Boolean(messageSucess)}
+                open={Boolean(messageSuccess)}
                 autoHideDuration={6000}
                 anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
-                <Alert severity="error" 
-                variant="filled" 
-                onClose={() => setMessageSucess('')}>
-                    {messageSucess}
+
+                <Alert severity="success" 
+                    variant="filled" 
+                    onClose={() => setMessageSuccess('')}>
+                    {messageSuccess}
                 </Alert>
             </Snackbar>
-
         </Box>
     )
 }
